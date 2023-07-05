@@ -10,13 +10,33 @@ def random_predict(number:int=1) -> int:
         int: Число попыток
     """
 
-    count = 0
+    # global count
 
-    while True:
+    def count_random(number, start = 1, end = 101, count = 0):
+        """Перебираем числа
+
+        Args:
+            number (int, optional): Искомое число которое необходимо угадать
+            start (int, optional): Изначальный старт диапазона рандомных чисел. Defaults to 1.
+            end (int, optional): Изначальное окончание диапазона рандомных чисел. Defaults to 101.
+            count (int, optional): Количество попыток угадать число. Defaults to 0.
+
+        Returns:
+            int: число попыток
+        """
         count += 1
-        predict_number = np.random.randint(1, 101) # предполагаемое число
+        predict_number = np.random.randint(start, end) # предполагаемое число
+        # Если предполагаемое число равно заданному, то возвращаем количество попыток
         if number == predict_number:
-            break # выход из цикла, если угадали
+            return count
+        # Если предполагаемое число больше искомого, то снова вызываем функцию с окончанием равным последнему предполагаемому числу
+        elif number < predict_number:
+            return count_random(number, start, predict_number, count)
+        # Если предполагаемое число меньше искомого, то снова вызываем функцию с стартом равным предполагаемому числу
+        else:
+            return count_random(number, predict_number, end, count)
+    
+    count = count_random(number)
     return(count)
 
 
